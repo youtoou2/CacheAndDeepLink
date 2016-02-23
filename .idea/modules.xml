@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CacheLink/CacheLink.iml" filepath="$PROJECT_DIR$/CacheLink/CacheLink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OfflineCacheAndDeepLink.iml" filepath="$PROJECT_DIR$/OfflineCacheAndDeepLink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/greendao_generator_lib/greendao_generator_lib.iml" filepath="$PROJECT_DIR$/greendao_generator_lib/greendao_generator_lib.iml" />
+    </modules>
+  </component>
+</project>
