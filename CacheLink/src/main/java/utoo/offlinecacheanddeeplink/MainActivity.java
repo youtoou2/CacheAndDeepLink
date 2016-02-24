@@ -24,11 +24,14 @@ public class MainActivity extends AppCompatActivity {
     private ERROR_TYPE error_type;
 
     public enum ERROR_TYPE{
+        NORMAL,
         INVAILD_DEEPLINK;
 
         public static ERROR_TYPE from(int i){
             switch (i){
                 case 0:
+                    return NORMAL;
+                case 1:
                     return INVAILD_DEEPLINK;
                 default:
                     return null;
@@ -43,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent!=null && intent.getExtras()!=null) {
             error_type = ERROR_TYPE.from(intent.getExtras().getInt(ERROR_NUM));
-        }else{
-            error_type = null;
         }
         mTitles = getResources().getStringArray(R.array.drawer_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

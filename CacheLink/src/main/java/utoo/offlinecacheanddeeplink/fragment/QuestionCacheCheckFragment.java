@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import utoo.offlinecacheanddeeplink.R;
 import utoo.offlinecacheanddeeplink.Utils.AppLog;
@@ -112,6 +113,7 @@ public class QuestionCacheCheckFragment extends Fragment {
         if(AppSettings.getKeyQuestionId()<=0){
             updateFromServer();
         }else{
+            Toast.makeText(mContext, "Record found. Read data from DB", Toast.LENGTH_SHORT).show();
             initView(AppSettings.getKeyQuestionId());
         }
         initOnClick();

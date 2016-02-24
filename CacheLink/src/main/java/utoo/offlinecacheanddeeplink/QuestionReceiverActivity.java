@@ -112,15 +112,14 @@ public class QuestionReceiverActivity extends AppCompatActivity {
                         .commit();
                 break;
             default:
-                Intent intent = new Intent(this,MainActivity.class);
-                intent.putExtra(MainActivity.ERROR_NUM,MainActivity.ERROR_TYPE.INVAILD_DEEPLINK.ordinal());
-                startActivity(intent);
-                this.finish();
+                errorHandler();
         }
     }
 
     private void errorHandler(){
-        AppLog.e("error in catching deeplink");
+        Intent intent = new Intent(this,MainActivity.class);
+        intent.putExtra(MainActivity.ERROR_NUM,MainActivity.ERROR_TYPE.INVAILD_DEEPLINK.ordinal());
+        startActivity(intent);
         this.finish();
     }
 }

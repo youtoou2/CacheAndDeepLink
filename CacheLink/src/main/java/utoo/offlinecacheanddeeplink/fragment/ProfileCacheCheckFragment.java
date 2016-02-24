@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import utoo.offlinecacheanddeeplink.R;
 import utoo.offlinecacheanddeeplink.Utils.AppLog;
@@ -110,6 +111,7 @@ public class ProfileCacheCheckFragment extends Fragment {
         if(AppSettings.getKeyProfileID()<=0){
             updateFromServer();
         }else{
+            Toast.makeText(mContext, "Record found. Read data from DB", Toast.LENGTH_SHORT).show();
             initView(AppSettings.getKeyProfileID());
         }
         initOnClick();
