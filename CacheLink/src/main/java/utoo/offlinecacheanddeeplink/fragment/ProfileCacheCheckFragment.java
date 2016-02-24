@@ -97,13 +97,16 @@ public class ProfileCacheCheckFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        profileString = getArguments().getString(PROFILE_STRING);
+        if(getArguments()!=null) {
+            profileString = getArguments().getString(PROFILE_STRING);
+        }
 
         mContext = getContext();
         btn_refresh = (Button) rootView.findViewById(R.id.btn_refresh);
         mProfileView = (ProfileView)rootView.findViewById(R.id.profile_view);
         fragment_profile_refresh = (SwipeRefreshLayout)rootView.findViewById(R.id.fragment_profile_refresh);
         manager = getFragmentManager();
+        //TODO should load things separated from deeplink and database...but ain't got time for that :/
         if(AppSettings.getKeyProfileID()<=0){
             updateFromServer();
         }else{
@@ -126,7 +129,7 @@ public class ProfileCacheCheckFragment extends Fragment {
                 fragment_profile_refresh.setRefreshing(false);
 
             }
-        });
+        },profileString);
     }
     private void initOnClick(){
         btn_refresh.setOnClickListener(new View.OnClickListener() {

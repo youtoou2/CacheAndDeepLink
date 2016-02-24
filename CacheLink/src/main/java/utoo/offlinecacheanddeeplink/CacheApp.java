@@ -1,12 +1,16 @@
 package utoo.offlinecacheanddeeplink;
 
 import android.app.Application;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 
+import com.airbnb.deeplinkdispatch.DeepLinkActivity;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 import utoo.offlinecacheanddeeplink.Utils.AppSettings;
 import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+import utoo.offlinecacheanddeeplink.receiver.DeepLinkReceiver;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -71,6 +75,8 @@ public class CacheApp extends Application {
         Fabric.with(this, new Crashlytics());
         GreenDaoHelper.initHelper(this);
         AppSettings.setApplicationContext(this);
+        IntentFilter intentFilter = new IntentFilter(DeepLinkActivity.ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(new DeepLinkReceiver(), intentFilter);
     }
 
     public static CacheApp getInstance(){

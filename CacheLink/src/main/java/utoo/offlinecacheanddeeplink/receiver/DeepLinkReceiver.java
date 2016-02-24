@@ -1,16 +1,12 @@
-package utoo.offlinecacheanddeeplink;
+package utoo.offlinecacheanddeeplink.receiver;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 
-import com.airbnb.deeplinkdispatch.DeepLink;
+import com.airbnb.deeplinkdispatch.DeepLinkActivity;
 
 import utoo.offlinecacheanddeeplink.Utils.AppLog;
-import utoo.offlinecacheanddeeplink.fragment.ProfileCacheCheckFragment;
-import utoo.offlinecacheanddeeplink.fragment.QuestionCacheCheckFragment;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -66,61 +62,18 @@ import utoo.offlinecacheanddeeplink.fragment.QuestionCacheCheckFragment;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
  * Created by youtoolaw on 24/2/16.
  */
-@DeepLink({"snapask-interview://{type}/{id}", "snapask-interview://{type}/{id}"})
-public class QuestionReceiverActivity extends AppCompatActivity {
-    public static enum DeepLinkType{
-        QUESTION,
-        PROFILE
-    }
+public class DeepLinkReceiver extends BroadcastReceiver {
+    private static final String TAG = DeepLinkReceiver.class.getSimpleName();
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getIntent().getBooleanExtra(DeepLink.IS_DEEP_LINK, false)) {
-            setContentView(R.layout.activity_container);
-            Bundle parameters = getIntent().getExtras();
-            String type = parameters.getString("type");
-            String id = parameters.getString("id");
-            AppLog.d("type: " + type + "\nid: " + id);
-            if(type.equals("question")){
-                selectContainer(DeepLinkType.QUESTION,id);
-            }else if (type.equals("user")){
-                selectContainer(DeepLinkType.PROFILE,id);
-            }else{
-                errorHandler();
-            }
-        }else{
-            AppLog.e("error in catching deeplink");
-            errorHandler();
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        //for logging
+        String deepLinkUri = intent.getStringExtra(DeepLinkActivity.EXTRA_URI);
+        if (intent.getBooleanExtra(DeepLinkActivity.EXTRA_SUCCESSFUL, false)) {
+            AppLog.d( "Success deep linking: " + deepLinkUri);
+        } else {
+            String errorMessage = intent.getStringExtra(DeepLinkActivity.EXTRA_ERROR_MESSAGE);
+            AppLog.d( "Error deep linking: " + deepLinkUri + " with error message +" + errorMessage);
         }
-    }
-
-    private void selectContainer(DeepLinkType type,String id) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment;
-        switch (type){
-            case QUESTION:
-                fragment = QuestionCacheCheckFragment.newInstance(id);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.receiver_container, fragment)
-                        .commit();
-                break;
-            case PROFILE:
-                fragment = ProfileCacheCheckFragment.newInstance(id);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.receiver_container, fragment)
-                        .commit();
-                break;
-            default:
-                Intent intent = new Intent(this,MainActivity.class);
-                intent.putExtra(MainActivity.ERROR_NUM,MainActivity.ERROR_TYPE.INVAILD_DEEPLINK.ordinal());
-                startActivity(intent);
-                this.finish();
-        }
-    }
-
-    private void errorHandler(){
-        AppLog.e("error in catching deeplink");
-        this.finish();
     }
 }

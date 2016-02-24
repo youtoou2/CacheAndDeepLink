@@ -99,13 +99,16 @@ public class QuestionCacheCheckFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_question, container, false);
-        questionString = getArguments().getString(QUESTION_STRING);
+        if(getArguments()!=null) {
+            questionString = getArguments().getString(QUESTION_STRING);
+        }
         mContext = getContext();
         btn_get_question = (Button) rootView.findViewById(R.id.btn_get_question);
         quest_frame = (LinearLayout)rootView.findViewById(R.id.quest_frame);
         quest_view = (QuestionView)rootView.findViewById(R.id.quest_view);
         fragment_cache_refresh = (SwipeRefreshLayout)rootView.findViewById(R.id.fragment_cache_refresh);
         manager = getFragmentManager();
+        //TODO should load things separated from deeplink and database...but ain't got time for that :/
         if(AppSettings.getKeyQuestionId()<=0){
             updateFromServer();
         }else{
@@ -128,7 +131,7 @@ public class QuestionCacheCheckFragment extends Fragment {
                 fragment_cache_refresh.setRefreshing(false);
 
             }
-        });
+        },questionString);
     }
     private void initOnClick(){
         btn_get_question.setOnClickListener(new View.OnClickListener() {

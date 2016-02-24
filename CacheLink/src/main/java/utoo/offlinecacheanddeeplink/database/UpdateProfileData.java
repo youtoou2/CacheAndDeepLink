@@ -76,14 +76,14 @@ public class UpdateProfileData {
     public UpdateProfileData(Context mContext){
         this.mContext = mContext;
     }
-    public void go(UpdateDatabaseListener listener){
+    public void go(UpdateDatabaseListener listener,String id){
         this.listener = listener;
         dao = GreenDaoHelper.getmUserDao();
-        pullFromServer();
+        pullFromServer(id);
     }
 
-    private void pullFromServer(){
-        ApiCaller.jsonRequest(mContext, ApiCaller.EXAMPLE_PROFILE_ID, new Response.Listener<JSONObject>() {
+    private void pullFromServer(String id){
+        ApiCaller.jsonRequest(mContext, id==null||id.isEmpty()?ApiCaller.EXAMPLE_PROFILE_ID:id, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 worker(response);
