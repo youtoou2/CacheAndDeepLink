@@ -2,4 +2,48 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
+         https://developer.android.com/design/patterns/navigation-drawer.html -->
+    <dimen name="navigation_drawer_width">240dp</dimen>
+
+    <dimen name="dp5">5dp</dimen>
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="dp15">15dp</dimen>
+    <dimen name="dp20">20dp</dimen>
+    <dimen name="dp25">25dp</dimen>
+    <dimen name="dp30">30dp</dimen>
+    <dimen name="dp35">35dp</dimen>
+    <dimen name="dp40">40dp</dimen>
+    <dimen name="dp45">45dp</dimen>
+    <dimen name="dp50">50dp</dimen>
+    <dimen name="dp60">60dp</dimen>
+    <dimen name="dp80">80dp</dimen>
+    <dimen name="dp100">100dp</dimen>
+    <dimen name="dp120">120dp</dimen>
+    <dimen name="dp140">140dp</dimen>
+    <dimen name="dp160">160dp</dimen>
+    <dimen name="dp180">180dp</dimen>
+    <dimen name="dp200">200dp</dimen>
+    <dimen name="dp300">300dp</dimen>
+    <dimen name="dp350">350dp</dimen>
+    <dimen name="dp400">400dp</dimen>
+    <dimen name="dp500">500dp</dimen>
+    <dimen name="dp600">600dp</dimen>
+    <dimen name="dp720">720dp</dimen>
+
+
+    <dimen name="dpn50">-50dp</dimen>
+
+    <dimen name="sp12">12sp</dimen>
+    <dimen name="sp14">14sp</dimen>
+    <dimen name="sp16">16sp</dimen>
+    <dimen name="sp20">20sp</dimen>
+    <dimen name="sp24">24sp</dimen>
+    <dimen name="sp28">28sp</dimen>
+    <dimen name="sp32">32sp</dimen>
+    <dimen name="sp36">36sp</dimen>
+    <dimen name="sp40">40sp</dimen>
+    <dimen name="sp44">44sp</dimen>
+    <dimen name="sp48">48sp</dimen>
 </resources>

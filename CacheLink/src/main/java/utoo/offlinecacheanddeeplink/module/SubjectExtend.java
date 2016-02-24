@@ -1,12 +1,6 @@
-package utoo.offlinecacheanddeeplink;
+package utoo.offlinecacheanddeeplink.module;
 
-import android.app.Application;
-
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-import utoo.offlinecacheanddeeplink.Utils.AppSettings;
-import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+import utoo.offlinecacheanddeeplink.RegionData;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -60,20 +54,46 @@ import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~:.,77777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~..7777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
- * Created by youtoolaw on 23/2/16.
+ * Created by youtoolaw on 24/2/16.
  */
-public class CacheApp extends Application {
-    private static CacheApp instance;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        Fabric.with(this, new Crashlytics());
-        GreenDaoHelper.initHelper(this);
-        AppSettings.setApplicationContext(this);
+public class SubjectExtend {
+
+    private long id;
+    private String abbr;
+    private String description;
+    private RegionData region;
+
+
+    public long getId() {
+        return id;
     }
 
-    public static CacheApp getInstance(){
-        return instance;
+    public void setId(long id) {
+        this.id = id;
     }
+
+    public String getAbbr() {
+        return abbr;
+    }
+
+    public void setAbbr(String abbr) {
+        this.abbr = abbr;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public RegionData getRegion() {
+        return region;
+    }
+
+    public void setRegion(RegionData region) {
+        this.region = region;
+    }
+
 }

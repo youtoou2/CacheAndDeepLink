@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btn_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pull To Force update"
+        android:background="@drawable/button_bg"
+        android:textColor="@android:color/white"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_profile_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/profile_frame"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <utoo.offlinecacheanddeeplink.View.ProfileView
+                android:id="@+id/profile_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></utoo.offlinecacheanddeeplink.View.ProfileView>
+        </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

@@ -1,12 +1,15 @@
 package utoo.offlinecacheanddeeplink;
 
-import android.app.Application;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
-import com.crashlytics.android.Crashlytics;
+import com.airbnb.deeplinkdispatch.DeepLink;
 
-import io.fabric.sdk.android.Fabric;
-import utoo.offlinecacheanddeeplink.Utils.AppSettings;
-import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+import utoo.offlinecacheanddeeplink.Utils.AppLog;
+import utoo.offlinecacheanddeeplink.fragment.ProfileCacheCheckFragment;
+import utoo.offlinecacheanddeeplink.fragment.QuestionCacheCheckFragment;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -60,20 +63,53 @@ import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~:.,77777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~..7777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
- * Created by youtoolaw on 23/2/16.
+ * Created by youtoolaw on 24/2/16.
  */
-public class CacheApp extends Application {
-    private static CacheApp instance;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        Fabric.with(this, new Crashlytics());
-        GreenDaoHelper.initHelper(this);
-        AppSettings.setApplicationContext(this);
+@DeepLink({"snapask-interview://question/{q}", "snapask-interview://user/{p}"})
+public class QuestionReceiverActivity extends AppCompatActivity {
+    public static enum DeepLinkType{
+        QUESTION,
+        PROFILE
     }
 
-    public static CacheApp getInstance(){
-        return instance;
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getIntent().getBooleanExtra(DeepLink.IS_DEEP_LINK, false)) {
+            Bundle parameters = getIntent().getExtras();
+
+            String questionString = parameters.getString("q");
+            String profileString = parameters.getString("p");
+            setContentView(R.layout.activity_container);
+
+        }else{
+            AppLog.e("error in catching deeplink");
+            errorHandler();
+        }
+    }
+
+    private void selectContainer(DeepLinkType type,String id) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment;
+        switch (type){
+            case QUESTION:
+                fragment = QuestionCacheCheckFragment.newInstance(id);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment)
+                        .commit();
+                break;
+            case PROFILE:
+                fragment = ProfileCacheCheckFragment.newInstance(id);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment)
+                        .commit();
+                break;
+            default:
+                errorHandler();
+        }
+    }
+
+    private void errorHandler(){
+
     }
 }

@@ -1,12 +1,17 @@
-package utoo.offlinecacheanddeeplink;
+package utoo.offlinecacheanddeeplink.View;
 
-import android.app.Application;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.AttributeSet;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-import utoo.offlinecacheanddeeplink.Utils.AppSettings;
+import utoo.offlinecacheanddeeplink.R;
+import utoo.offlinecacheanddeeplink.UserDao;
+import utoo.offlinecacheanddeeplink.Utils.AppLog;
 import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+import utoo.offlinecacheanddeeplink.module.UserExtend;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -60,20 +65,96 @@ import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~:.,77777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~..7777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
- * Created by youtoolaw on 23/2/16.
+ * Created by youtoolaw on 24/2/16.
  */
-public class CacheApp extends Application {
-    private static CacheApp instance;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        Fabric.with(this, new Crashlytics());
-        GreenDaoHelper.initHelper(this);
-        AppSettings.setApplicationContext(this);
+public class ProfileView extends FrameLayout {
+    private Context mContext;
+    //layout
+    private TextView profile_id,profile_gender,profile_name,profile_email,profile_username,
+            profile_reg_time,profile_dob,profile_school,profile_mobile,profile_role,profile_rate,profile_rate_total;
+    private ImageView profile_image;
+
+    public ProfileView(Context context) {
+        super(context);
+        init(context);
+    }
+    public ProfileView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
     }
 
-    public static CacheApp getInstance(){
-        return instance;
+    public ProfileView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
+    public void init(Context mContext){
+        this.mContext = mContext;
+        inflate(getContext(), R.layout.view_profile_layout, this);
+    }
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        inflateLayout();
+    }
+    private void inflateLayout(){
+        profile_id = (TextView)findViewById(R.id.profile_id);
+        profile_gender = (TextView)findViewById(R.id.profile_gender);
+        profile_name = (TextView)findViewById(R.id.profile_name);
+        profile_email = (TextView)findViewById(R.id.profile_email);
+        profile_username = (TextView)findViewById(R.id.profile_username);
+        profile_reg_time = (TextView)findViewById(R.id.profile_reg_time);
+        profile_dob = (TextView)findViewById(R.id.profile_dob);
+        profile_school = (TextView)findViewById(R.id.profile_school);
+        profile_mobile = (TextView)findViewById(R.id.profile_mobile);
+        profile_role = (TextView)findViewById(R.id.profile_role);
+        profile_rate = (TextView)findViewById(R.id.profile_rate);
+        profile_rate_total = (TextView)findViewById(R.id.profile_rate_total);
+        profile_image = (ImageView)findViewById(R.id.profile_image);
+    }
+    public void setup(long id) {
+        initViewBackground(id);
+    }
+
+    private void initViewBackground(long questionID){
+        new AsyncInitViewTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,questionID);
+    }
+
+    private class AsyncInitViewTask extends AsyncTask<Long, Void, Boolean> {
+        public AsyncInitViewTask() {
+            super();
+        }
+        private UserExtend userExtend;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Long... params) {
+            long id = params[0];
+            UserDao mUserDao = GreenDaoHelper.getmUserDao();
+            userExtend = new UserExtend(mUserDao.queryBuilder().where(UserDao.Properties.Id.eq(id)).unique());
+            if(userExtend!=null){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean == true) {
+                initView(userExtend);
+            }
+        }
+    }
+
+    private void initView(UserExtend dataExtend){
+        AppLog.d("initView");
+        dataExtend.assignView(mContext, profile_id,profile_gender,profile_name,profile_email,profile_username,
+                profile_reg_time,profile_dob,profile_school,profile_mobile,profile_role,profile_rate,profile_rate_total,profile_image);
     }
 }

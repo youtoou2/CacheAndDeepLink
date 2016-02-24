@@ -1,12 +1,8 @@
-package utoo.offlinecacheanddeeplink;
+package utoo.offlinecacheanddeeplink.Utils;
 
-import android.app.Application;
-
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-import utoo.offlinecacheanddeeplink.Utils.AppSettings;
-import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -60,20 +56,13 @@ import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~:.,77777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~..7777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
- * Created by youtoolaw on 23/2/16.
+ * Created by youtoolaw on 24/2/16.
  */
-public class CacheApp extends Application {
-    private static CacheApp instance;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        Fabric.with(this, new Crashlytics());
-        GreenDaoHelper.initHelper(this);
-        AppSettings.setApplicationContext(this);
-    }
-
-    public static CacheApp getInstance(){
-        return instance;
+public class TimeHelper {
+    public final static SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MMM-dd", Locale.getDefault());
+    public static String getFormattedyyyyMMMdd(long ts){
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(ts);
+        return yyyyMMdd.format(cal.getTime());
     }
 }

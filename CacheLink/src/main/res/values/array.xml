@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="drawer_items">
+        <item>Question Cache</item>
+        <item>Profile Cache</item>
+    </string-array>
+</resources>

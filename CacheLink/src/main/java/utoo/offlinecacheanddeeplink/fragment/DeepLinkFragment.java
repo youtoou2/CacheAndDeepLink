@@ -1,12 +1,15 @@
-package utoo.offlinecacheanddeeplink;
+package utoo.offlinecacheanddeeplink.fragment;
 
-import android.app.Application;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-import utoo.offlinecacheanddeeplink.Utils.AppSettings;
-import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+import utoo.offlinecacheanddeeplink.R;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -62,18 +65,22 @@ import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
  * Created by youtoolaw on 23/2/16.
  */
-public class CacheApp extends Application {
-    private static CacheApp instance;
+public class DeepLinkFragment extends Fragment {
+    public static int DeepLinkFragmentPos = 1;
+    private Context mContext;
+    private FragmentManager manager;
+    @Nullable
     @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        Fabric.with(this, new Crashlytics());
-        GreenDaoHelper.initHelper(this);
-        AppSettings.setApplicationContext(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_deep_link,container,false);
+        mContext = getActivity();
+        manager = getFragmentManager();
+
+        return v;
     }
 
-    public static CacheApp getInstance(){
-        return instance;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 }

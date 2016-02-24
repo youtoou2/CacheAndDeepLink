@@ -1,12 +1,12 @@
-package utoo.offlinecacheanddeeplink;
+package utoo.offlinecacheanddeeplink.Api;
 
-import android.app.Application;
+import android.content.Context;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-import utoo.offlinecacheanddeeplink.Utils.AppSettings;
-import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -62,18 +62,16 @@ import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
  * Created by youtoolaw on 23/2/16.
  */
-public class CacheApp extends Application {
-    private static CacheApp instance;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        Fabric.with(this, new Crashlytics());
-        GreenDaoHelper.initHelper(this);
-        AppSettings.setApplicationContext(this);
-    }
-
-    public static CacheApp getInstance(){
-        return instance;
+public class ApiCaller {
+    public static String BASE_API = "https://api.myjson.com/bins/";
+    public static String EXAMPLE_QUESTION_ID = "1qzf3";
+    public static String EXAMPLE_PROFILE_ID = "mosv";
+    public static void jsonRequest(Context mContext,String params,Response.Listener listener,Response.ErrorListener errorListener){
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        // Request a string response from the provided URL.
+        JsonObjectRequest mJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_API+params,listener,errorListener);
+        // Add the request to the RequestQueue.
+        queue.add(mJsonObjectRequest);
     }
 }

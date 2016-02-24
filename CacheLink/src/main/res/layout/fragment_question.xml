@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btn_get_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pull To Force update"
+        android:background="@drawable/button_bg"
+        android:textColor="@android:color/white"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_cache_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/quest_frame"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="welcome."/>
+            <utoo.offlinecacheanddeeplink.View.QuestionView
+                android:id="@+id/quest_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></utoo.offlinecacheanddeeplink.View.QuestionView>
+        </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

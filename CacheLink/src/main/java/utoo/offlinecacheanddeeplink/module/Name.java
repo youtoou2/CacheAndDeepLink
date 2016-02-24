@@ -1,12 +1,4 @@
-package utoo.offlinecacheanddeeplink;
-
-import android.app.Application;
-
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-import utoo.offlinecacheanddeeplink.Utils.AppSettings;
-import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+package utoo.offlinecacheanddeeplink.module;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -60,20 +52,25 @@ import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~:.,77777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~..7777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
- * Created by youtoolaw on 23/2/16.
+ * Created by youtoolaw on 24/2/16.
  */
-public class CacheApp extends Application {
-    private static CacheApp instance;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        Fabric.with(this, new Crashlytics());
-        GreenDaoHelper.initHelper(this);
-        AppSettings.setApplicationContext(this);
+public class Name {
+    private String first;
+    private String last;
+
+    public String getFirst() {
+        return first;
     }
 
-    public static CacheApp getInstance(){
-        return instance;
+    public void setFirst(String first) {
+        this.first = first;
+    }
+
+    public String getLast() {
+        return last;
+    }
+
+    public void setLast(String last) {
+        this.last = last;
     }
 }

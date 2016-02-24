@@ -1,12 +1,18 @@
-package utoo.offlinecacheanddeeplink;
+package utoo.offlinecacheanddeeplink.database;
 
-import android.app.Application;
+import android.content.Context;
+import android.os.AsyncTask;
 
-import com.crashlytics.android.Crashlytics;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
-import io.fabric.sdk.android.Fabric;
-import utoo.offlinecacheanddeeplink.Utils.AppSettings;
-import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
+import org.json.JSONObject;
+
+import utoo.offlinecacheanddeeplink.Api.ApiCaller;
+import utoo.offlinecacheanddeeplink.QuestionDataDao;
+import utoo.offlinecacheanddeeplink.Utils.AppLog;
+import utoo.offlinecacheanddeeplink.module.QuestionDataExtend;
 
 /**
  * 77777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -60,20 +66,74 @@ import utoo.offlinecacheanddeeplink.database.GreenDaoHelper;
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~:.,77777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~..7777777777777777
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~....77777777777777
- * Created by youtoolaw on 23/2/16.
+ * Created by youtoolaw on 24/2/16.
  */
-public class CacheApp extends Application {
-    private static CacheApp instance;
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        Fabric.with(this, new Crashlytics());
-        GreenDaoHelper.initHelper(this);
-        AppSettings.setApplicationContext(this);
+public class UpdateQuestionData {
+    private Context mContext;
+    private UpdateDatabaseListener listener;
+    private QuestionDataDao dao;
+
+    public UpdateQuestionData(Context mContext){
+        this.mContext = mContext;
+    }
+    public void go(UpdateDatabaseListener listener){
+        this.listener = listener;
+        dao = GreenDaoHelper.getmQuestionDataDao();
+        pullFromServer();
     }
 
-    public static CacheApp getInstance(){
-        return instance;
+    private void pullFromServer(){
+        ApiCaller.jsonRequest(mContext, ApiCaller.EXAMPLE_QUESTION_ID, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                worker(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AppLog.e(error.toString());
+            }
+        });
+    }
+
+    private void worker(JSONObject responseDataString){
+        DatabaseAsync async = new DatabaseAsync();
+        async.execute(responseDataString);
+    }
+
+    private class DatabaseAsync extends AsyncTask<JSONObject, String, Boolean> {
+        private long resultID = 0l;
+        @Override
+        protected void onPreExecute() {
+            AppLog.d("database job start");
+        }
+
+        @Override
+        protected Boolean doInBackground(JSONObject... params) {
+            try {
+                AppLog.d("database going");
+                JSONObject responseDataString = (JSONObject) params[0];
+                AppLog.d("response "+responseDataString.getString("data"));
+                Gson gson = new Gson();
+                QuestionDataExtend questionData = gson.fromJson(responseDataString.getString("data"),QuestionDataExtend.class);
+                resultID = questionData.getId();
+                AppLog.d(questionData.toString());
+                dao.insertOrReplace(questionData.readyDB());
+                return true;
+            } catch (Exception ex) {
+                AppLog.e(ex.toString());
+                return false;
+            }
+
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            AppLog.d("database done");
+            if(result) {
+                listener.onFinish(resultID);
+            } else {
+                listener.onError();
+            }
+        }
     }
 }

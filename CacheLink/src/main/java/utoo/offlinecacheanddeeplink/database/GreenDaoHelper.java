@@ -133,4 +133,32 @@ public class GreenDaoHelper {
     public static SQLiteDatabase getDb() {
         return db;
     }
+
+    public static DaoSession getDaoSession() {
+        return daoSession;
+    }
+
+    public static DaoMaster getDaoMaster() {
+        return daoMaster;
+    }
+
+    public static QuestionDataDao getmQuestionDataDao() {
+        return mQuestionDataDao;
+    }
+
+    public static RegionDataDao getmRegionDataDao() {
+        return mRegionDataDao;
+    }
+
+    public static SubjectDataDao getmSubjectDataDao() {
+        return mSubjectDataDao;
+    }
+
+    public static UserDao getmUserDao() {
+        return mUserDao;
+    }
+
+    public static UserRoleDao getmUserRoleDao() {
+        return mUserRoleDao;
+    }
 }

@@ -1,14 +1,33 @@
 buildscript {
     repositories {
+        mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
     }
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'android-apt'
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile 'com.google.code.gson:gson:2.6.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile files('libs/greendao-2.0.0.jar')
+    compile files('libs/jdom-1.1.1-android-fork.jar')
+    compile project(':greendao_generator_lib')
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
+    compile 'com.airbnb:deeplinkdispatch:1.5.0'
+    apt 'com.airbnb:deeplinkdispatch-processor:1.5.0'
+}
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -34,19 +53,5 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src-gen/utoo/offlinecacheanddeeplink'
-    }
-}
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.google.code.gson:gson:2.6.1'
-    compile files('libs/greendao-2.0.0.jar')
-    compile files('libs/jdom-1.1.1-android-fork.jar')
-    compile project(':greendao_generator_lib')
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-        transitive = true;
     }
 }
