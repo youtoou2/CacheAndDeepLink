@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import utoo.offlinecacheanddeeplink.Api.ApiCaller;
 import utoo.offlinecacheanddeeplink.R;
 import utoo.offlinecacheanddeeplink.Utils.AppLog;
 import utoo.offlinecacheanddeeplink.Utils.AppSettings;
@@ -100,23 +101,30 @@ public class QuestionCacheCheckFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_question, container, false);
-        if(getArguments()!=null) {
+        if (getArguments() != null) {
             questionString = getArguments().getString(QUESTION_STRING);
         }
         mContext = getContext();
         btn_get_question = (Button) rootView.findViewById(R.id.btn_get_question);
-        quest_frame = (LinearLayout)rootView.findViewById(R.id.quest_frame);
-        quest_view = (QuestionView)rootView.findViewById(R.id.quest_view);
-        fragment_cache_refresh = (SwipeRefreshLayout)rootView.findViewById(R.id.fragment_cache_refresh);
+        quest_frame = (LinearLayout) rootView.findViewById(R.id.quest_frame);
+        quest_view = (QuestionView) rootView.findViewById(R.id.quest_view);
+        fragment_cache_refresh = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_cache_refresh);
         manager = getFragmentManager();
         //TODO should load things separated from deeplink and database...but ain't got time for that :/
-        if(AppSettings.getKeyQuestionId()<=0){
-            updateFromServer();
+        if (questionString.isEmpty() || questionString == ApiCaller.EXAMPLE_QUESTION_ID){
+            if (AppSettings.getKeyQuestionId() <= 0) {
+                updateFromServer();
+            } else {
+                Toast.makeText(mContext, "Record found. Read data from DB", Toast.LENGTH_SHORT).show();
+                initView(AppSettings.getKeyQuestionId());
+            }
+
+            initOnClick();
         }else{
-            Toast.makeText(mContext, "Record found. Read data from DB", Toast.LENGTH_SHORT).show();
-            initView(AppSettings.getKeyQuestionId());
+            btn_get_question.setVisibility(View.GONE);
+            fragment_cache_refresh.setEnabled(false);
+            Toast.makeText(mContext,"Invaild deep link URI",Toast.LENGTH_SHORT).show();
         }
-        initOnClick();
         return rootView;
     }
 

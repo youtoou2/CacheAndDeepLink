@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import utoo.offlinecacheanddeeplink.Api.ApiCaller;
 import utoo.offlinecacheanddeeplink.R;
 import utoo.offlinecacheanddeeplink.Utils.AppLog;
 import utoo.offlinecacheanddeeplink.Utils.AppSettings;
@@ -108,11 +109,17 @@ public class ProfileCacheCheckFragment extends Fragment {
         fragment_profile_refresh = (SwipeRefreshLayout)rootView.findViewById(R.id.fragment_profile_refresh);
         manager = getFragmentManager();
         //TODO should load things separated from deeplink and database...but ain't got time for that :/
-        if(AppSettings.getKeyProfileID()<=0){
-            updateFromServer();
+        if (profileString.isEmpty() || profileString == ApiCaller.EXAMPLE_QUESTION_ID){
+            if(AppSettings.getKeyProfileID()<=0){
+                updateFromServer();
+            }else{
+                Toast.makeText(mContext, "Record found. Read data from DB", Toast.LENGTH_SHORT).show();
+                initView(AppSettings.getKeyProfileID());
+            }
         }else{
-            Toast.makeText(mContext, "Record found. Read data from DB", Toast.LENGTH_SHORT).show();
-            initView(AppSettings.getKeyProfileID());
+            btn_refresh.setVisibility(View.GONE);
+            fragment_profile_refresh.setEnabled(false);
+            Toast.makeText(mContext,"Invaild deep link URI",Toast.LENGTH_SHORT).show();
         }
         initOnClick();
         return rootView;
